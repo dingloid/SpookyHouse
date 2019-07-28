@@ -1,3 +1,5 @@
+import { PassThrough } from 'stream';
+
 const constants = require('../consts/constants.js')
 
 export class RoomService {
@@ -12,6 +14,8 @@ export class RoomService {
             type: Object.values(constants.RoomType).filter(x => x == 'Normal')
         }
     }
+
+    //TODO Create a 10x10 map and autopopulate
 
     generateNextRoom(direction){
         var exitAmounts = Math.ceil(Math.random(3 -1));
@@ -48,35 +52,32 @@ export class RoomService {
     floor-0100 == East only
     */
     getImageFile(room){
-        var suffixEnding = '../assets/floor-';
-        var fileName = '';
-        for(var i = 0; i < room.exits.length; i++){
-            if(room.exits[i].toString().toLowerCase() == 'up'){
-                fileName = suffixEnding.concat('1');
-            } else{
-                fileName = suffixEnding.concat('0');
-            }
-
-            if(room.exits[i].toString().toLowerCase() == 'right'){
-                fileName = suffixEnding.concat('1');
+        
+        var fileName = 'floor-';
+        for(var i = 0; i < 4; i++){
+            if(room.exits[i] != undefined){
+                switch(room.exits[i].toString().toLowerCase()){
+                    case 'up':
+                        fileName += '1';
+                        break;
+                    case 'right':
+                        fileName += '1';
+                        break;
+                    case 'down':
+                        fileName += '1';
+                        break;
+                    case 'left':
+                        fileName += '1';
+                        break;
+                    default:  
+                        fileName += '0';                      
+                        break;
+                }     
             } else {
-                fileName = suffixEnding.concat('0');
-            }
-
-            if(room.exits[i].toString().toLowerCase() == 'south'){
-                fileName = suffixEnding.concat('1');
-            } else {
-                fileName = suffixEnding.concat('0');
-            }
-
-            if(room.exits[i].toString().toLowerCase() == 'left'){
-                fileName = suffixEnding.concat('1');
-            } else {
-                fileName = suffixEnding.concat('0');
-            }
+                fileName += '0';
+                continue;
+            }               
         }
-
-        fileName = suffixEnding.concat('.png');
 
         return fileName;
     }
