@@ -45,9 +45,6 @@ export default {
                 this.message = "You cannot move " + eventId;
             }
         }
-    },
-    computed(){
-
     }
 }
 </script>
